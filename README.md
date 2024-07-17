@@ -1,4 +1,4 @@
-**Extracting Bank Name from PDF using Tesseract OCR with Spring Boot and Flask**
+# **Extracting Bank Name from PDF using Tesseract OCR with Spring Boot and Flask**
 
 _Project Overview_
 This project focuses on extracting bank names from PDF documents using optical character recognition (OCR). It employs both Tesseract OCR and a custom Flask API for OCR operations. The project combines Java (Spring Boot) and Python (Flask) to offer a robust solution for extracting and verifying bank names from PDFs.
@@ -42,7 +42,7 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Update this path to your Tesseract installation directory
+_Update this path to your Tesseract installation directory_
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 Run the Flask API server:
