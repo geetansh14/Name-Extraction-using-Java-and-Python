@@ -60,7 +60,7 @@ public class BankNameService {
         try {
             logger.info("Loading bank names from CSV");
             Set<String> loadedBankNames = BankNameUtil.loadBankNames("D:\\VS Folders\\jproject\\n" + //
-                                "ewname\\src\\main\\resources\\static\\bankName.csv");
+                    "ewname\\src\\main\\resources\\static\\bankName.csv");
             tempBankNames = loadedBankNames.stream().map(String::toLowerCase).collect(Collectors.toSet());
             for (String name : loadedBankNames) {
                 tempLowerToOriginalBankNames.put(name.toLowerCase(), name); // Populate the map
@@ -74,7 +74,7 @@ public class BankNameService {
             logger.info("Loading IFSC codes from JSON");
             ObjectMapper mapper = new ObjectMapper();
             tempIfscList = mapper.readValue(Files.readAllBytes(Paths.get("D:\\VS Folders\\jproject\\n" + //
-                                "ewname\\src\\main\\resources\\static\\IFSC-list.json")),
+                    "ewname\\src\\main\\resources\\static\\IFSC-list.json")),
                     new TypeReference<Set<String>>() {
                     });
         } catch (IOException e) {
@@ -86,7 +86,7 @@ public class BankNameService {
             logger.info("Loading bank abbreviations from CSV");
             List<String[]> lines = Files
                     .readAllLines(Paths.get("D:\\VS Folders\\jproject\\n" + //
-                                                "ewname\\src\\main\\resources\\static\\bank_abbreviations.csv"))
+                            "ewname\\src\\main\\resources\\static\\bank_abbreviations.csv"))
                     .stream().map(line -> line.split(",")).collect(Collectors.toList());
             for (String[] line : lines) {
                 if (line.length == 2) {
@@ -121,24 +121,22 @@ public class BankNameService {
         // Call Python API to extract text from the first page image
 
         // Existing OCR processing steps
-        try (PDDocument document = PDDocument.load(new ByteArrayInputStream(pdfBytes))) {
-            StringBuilder ocrTextBuilder = new StringBuilder();
-            int pagesToProcess = Math.min(document.getNumberOfPages(), 3);
-            for (int i = 0; i < pagesToProcess; i++) {
-                PDPage page = document.getPage(i);
-                String ocrText = PdfUtil.extractOcrTextFromPage(page);
-                ocrTextBuilder.append(ocrText).append("\n");
-            }
+        PDDocument document = PDDocument.load(new ByteArrayInputStream(pdfBytes));
+        StringBuilder ocrTextBuilder = new StringBuilder();
+        int pagesToProcess = Math.min(document.getNumberOfPages(), 3);
+        for (int i = 0; i < pagesToProcess; i++) {
+            PDPage page = document.getPage(i);
+            String ocrText = PdfUtil.extractOcrTextFromPage(page);
+            ocrTextBuilder.append(ocrText).append("\n");
+        }
 
-            String ocrText = ocrTextBuilder.toString();
-            logger.info("Combined OCR Text from first {} pages: {}", pagesToProcess, ocrText);
+        String ocrText = ocrTextBuilder.toString();
+        logger.info("Combined OCR Text from first {} pages: {}", pagesToProcess, ocrText);
 
-            // Check for IFSC code in combined OCR text
-            bankNameFromIfsc = findBankNameFromIfsc(ocrText);
-            if (bankNameFromIfsc != null) {
-                return bankNameFromIfsc;
-            }
-
+        // Check for IFSC code in combined OCR text
+        bankNameFromIfsc = findBankNameFromIfsc(ocrText);
+        if (bankNameFromIfsc != null) {
+            return bankNameFromIfsc;
         }
 
         String pythonExtractedText = extractTextFromPythonApi(pdfBytes);
@@ -151,24 +149,9 @@ public class BankNameService {
             }
         }
 
-        try (PDDocument document = PDDocument.load(new ByteArrayInputStream(pdfBytes))) {
-            StringBuilder ocrTextBuilder = new StringBuilder();
-            int pagesToProcess = Math.min(document.getNumberOfPages(), 3);
-            for (int i = 0; i < pagesToProcess; i++) {
-                PDPage page = document.getPage(i);
-                String ocrText = PdfUtil.extractOcrTextFromPage(page);
-                ocrTextBuilder.append(ocrText).append("\n");
-            }
-
-            String ocrText = ocrTextBuilder.toString();
-            logger.info("Combined OCR Text from first {} pages: {}", pagesToProcess, ocrText);
-
-            // Check for bank name in combined OCR text
-            String bankName = findBankName(ocrText);
-            if (bankName != null) {
-                return bankName;
-            }
-
+        String bankName = findBankName(ocrText);
+        if (bankName != null) {
+            return bankName;
         }
 
         String bankName_2 = findBankName(text);
@@ -285,29 +268,28 @@ public class BankNameService {
     private String getMatchingBankName(String potentialName) {
         LevenshteinDistance levenshtein = new LevenshteinDistance();
         String found = null;
-    
+
         for (String bankName : bankNames) {
             int distance = levenshtein.apply(bankName, potentialName);
             int maxLen = Math.max(bankName.length(), potentialName.length());
             double similarity = 1.0 - (double) distance / maxLen;
-    
+
             if (similarity >= 0.9) {
                 logger.info("Found match: '{}' with similarity: {}", bankName, similarity);
                 found = bankName;
-    
+
                 break;
             }
         }
-    
+
         if (found != null) {
             String originalName = lowerToOriginalBankNames.get(found);
             logger.info("Matched bank name from bankName.csv: {}", originalName);
             return originalName; // Use the map to return the original name
         }
-    
+
         return null;
     }
-    
 
     private String findBankNameFromIfsc(String text) {
         if (text == null || text.isEmpty()) {
@@ -447,7 +429,8 @@ public class BankNameService {
 
             double similarityToKey = 1.0 - (double) distanceToKey / maxLenKey;
             double similarityToValue = 1.0 - (double) distanceToValue / maxLenValue;
-            // logger.info("Similarity to key is : {} and to value is : {}", similarityToKey, similarityToValue);
+            // logger.info("Similarity to key is : {} and to value is : {}",
+            // similarityToKey, similarityToValue);
 
             if (similarityToKey >= 0.9) {
                 return value;
