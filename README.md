@@ -22,9 +22,9 @@ Make sure to add the Tesseract installation path to your system environment vari
 
 # _Setup and Installation_
 
-1. Clone the Repository
+1. Clone the Repository :
 git clone https://github.com/geetansh14/Name-Extraction-using-Java-and-Python.git
-2. Spring Boot Application
+2. Spring Boot Application : 
 Configure pom.xml:
 Ensure that the pom.xml file is configured with the required dependencies for Spring Boot, PDF processing (e.g., Apache PDFBox), and RESTful communication (e.g., RestTemplate). Update the dependencies as per your project's needs.
 
@@ -35,7 +35,7 @@ Build and run the Spring Boot application:
 mvn clean install
 mvn spring-boot:run
 
-3. Flask API
+3. Flask API : 
 Install the required Python packages:
 pip install pytesseract Flask
 
@@ -51,11 +51,11 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 Run the Flask API server:
 python app.py
 
-4. Configure API Endpoints
+4. Configure API Endpoints : 
 Use Postman or another API client to interact with the Flask API and test OCR extraction.
 Ensure your Spring Boot application correctly integrates with the Flask API for OCR tasks.
 
-5. IFSC Code Verification
+5. IFSC Code Verification : 
 The application uses the IFSC Razorpay API to verify bank names. Implement API requests as needed to fetch and validate bank information based on IFSC codes.
 
 # _Usage_
