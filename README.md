@@ -78,8 +78,10 @@ API Errors: Check API keys and endpoint configurations for both Flask and IFSC R
 
 Feel free to fork the repository and submit pull requests. For major changes or new features, please open an issue to discuss the modifications.
 
-_License_
+# _License_
+
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-_Contact_
+# _Contact_
+
 For any questions or support, please contact geetansh1425@gmail.com .
